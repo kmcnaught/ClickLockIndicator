@@ -44,9 +44,9 @@ namespace ClickLockIndicator
 
         private void OnLeftDown(object sender, EventArgs e)
         {
+            DebugLog($"LButtonDown  locked={_isLocked} holding={_isHolding}");
             if (_isLocked)
             {
-                // A left click when already locked releases the lock
                 Unlock();
                 return;
             }
@@ -58,6 +58,13 @@ namespace ClickLockIndicator
 
         private void OnLeftUp(object sender, EventArgs e)
         {
+            DebugLog($"LButtonUp    locked={_isLocked} holding={_isHolding}");
+            if (_isLocked)
+            {
+                Unlock();
+                return;
+            }
+
             if (!_isHolding) return;
 
             int clickLockMs = ClickLockHelper.GetClickLockTimeMs();
@@ -65,18 +72,17 @@ namespace ClickLockIndicator
 
             if (heldMs >= clickLockMs)
             {
-                // Held long enough — ClickLock has engaged
                 Lock();
             }
             else
             {
-                // Normal click, cancel
                 CancelHold();
             }
         }
 
         private void OnReleaseTrigger(object sender, EventArgs e)
         {
+            DebugLog($"ReleaseTrigger locked={_isLocked}");
             if (_isLocked)
                 Unlock();
         }
@@ -90,9 +96,8 @@ namespace ClickLockIndicator
 
             if (heldMs >= clickLockMs)
             {
-                // We've passed the threshold; Windows will engage lock on button up
-                // Show arc as complete but not yet "locked" (button still held)
-                _overlay.SetCharging(1.0f);
+                // Threshold passed while button is still held — lock immediately.
+                Lock();
                 return;
             }
 
@@ -111,6 +116,7 @@ namespace ClickLockIndicator
 
         private void Lock()
         {
+            DebugLog("→ LOCK");
             _isHolding = false;
             _isLocked = true;
             _holdTimer.Stop();
@@ -124,6 +130,7 @@ namespace ClickLockIndicator
 
         private void Unlock()
         {
+            DebugLog("→ UNLOCK");
             _isHolding = false;
             _isLocked = false;
             _holdTimer.Stop();
@@ -137,10 +144,15 @@ namespace ClickLockIndicator
 
         private void CancelHold()
         {
+            DebugLog("→ CANCEL");
             _isHolding = false;
             _holdTimer.Stop();
             _overlay.SetIdle();
         }
+
+        [System.Diagnostics.Conditional("DEBUG")]
+        private static void DebugLog(string msg) =>
+            System.Diagnostics.Debug.WriteLine($"[SM {DateTime.Now:HH:mm:ss.fff}] {msg}");
 
         private void PreloadSounds()
         {

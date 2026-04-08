@@ -10,8 +10,11 @@ namespace ClickLockIndicator
         private const int WM_LBUTTONDOWN = 0x0201;
         private const int WM_LBUTTONUP = 0x0202;
         private const int WM_RBUTTONDOWN = 0x0204;
+        private const int WM_RBUTTONUP = 0x0205;
         private const int WM_MBUTTONDOWN = 0x0207;
+        private const int WM_MBUTTONUP = 0x0208;
         private const int WM_XBUTTONDOWN = 0x020B;
+        private const int WM_XBUTTONUP = 0x020C;
 
         public event EventHandler LeftButtonDown;
         public event EventHandler LeftButtonUp;
@@ -55,8 +58,11 @@ namespace ClickLockIndicator
                         LeftButtonUp?.Invoke(this, EventArgs.Empty);
                         break;
                     case WM_RBUTTONDOWN:
+                    case WM_RBUTTONUP:
                     case WM_MBUTTONDOWN:
+                    case WM_MBUTTONUP:
                     case WM_XBUTTONDOWN:
+                    case WM_XBUTTONUP:
                         ReleaseTrigger?.Invoke(this, EventArgs.Empty);
                         break;
                 }
