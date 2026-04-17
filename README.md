@@ -2,7 +2,7 @@
 
 A lightweight system tray app that provides visual and audio feedback for Windows ClickLock.
 
-![ClickLock Indicator demo](scratch-clicklock.gif)
+<p align="center"><img src="scratch-clicklock.gif" alt="ClickLock Indicator demo" width="400"></p>
 
 ## Why?
 
@@ -26,7 +26,7 @@ This app adds a tray icon and an optional cursor overlay so the state is always 
 3. Run `ClickLockIndicator.exe`
 4. If Windows SmartScreen warns you, click **More info → Run anyway**
 
-The app appears only in the system tray (no window).
+The first time run shows a config window. After setup, the app appears only in the system tray.
 
 **Tray icon:**
 - Grey with small dot = idle
