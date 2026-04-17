@@ -18,7 +18,7 @@ namespace ClickLockIndicator
         public OverlayStyle OverlayStyle { get; set; } = OverlayStyle.Arc;
         public bool StartWithWindows { get; set; } = false;
 
-        private static string SettingsPath =>
+        public static string SettingsPath =>
             Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "settings.json");
 
         public static Settings Load()

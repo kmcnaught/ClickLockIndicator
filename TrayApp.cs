@@ -105,11 +105,11 @@ namespace ClickLockIndicator
             _trayIcon.Text = _isLocked ? "ClickLock Indicator — LOCKED" : "ClickLock Indicator — Idle";
         }
 
-        /// <summary>Draws a 16x16 tray icon: grey circle (idle) or filled blue circle (locked).</summary>
-        private Icon DrawTrayIcon(bool locked)
+        /// <summary>Draws a tray icon bitmap at the given size: grey circle (idle) or filled blue circle (locked).</summary>
+        public static Bitmap DrawTrayIconBitmap(bool locked, int size)
         {
-            int size = 16;
-            using (var bmp = new Bitmap(size, size))
+            float s = size / 16f;
+            var bmp = new Bitmap(size, size);
             using (var g = Graphics.FromImage(bmp))
             {
                 g.SmoothingMode = SmoothingMode.AntiAlias;
@@ -117,25 +117,37 @@ namespace ClickLockIndicator
 
                 if (locked)
                 {
-                    // Filled blue circle with white centre dot
+                    int margin = (int)Math.Round(1 * s);
+                    int diam = size - 2 * margin - (int)Math.Round(1 * s);
                     using (var brush = new SolidBrush(Color.FromArgb(80, 200, 255)))
-                        g.FillEllipse(brush, 1, 1, 13, 13);
+                        g.FillEllipse(brush, margin, margin, diam, diam);
                     using (var pen = new Pen(Color.FromArgb(40, 140, 200), 1.5f))
-                        g.DrawEllipse(pen, 1, 1, 13, 13);
+                        g.DrawEllipse(pen, margin, margin, diam, diam);
+                    int dotD = (int)Math.Round(5 * s);
+                    int dotX = (size - dotD) / 2;
                     using (var brush = new SolidBrush(Color.White))
-                        g.FillEllipse(brush, 5, 5, 5, 5);
+                        g.FillEllipse(brush, dotX, dotX, dotD, dotD);
                 }
                 else
                 {
-                    // Outline circle, grey
+                    int margin = (int)Math.Round(2 * s);
+                    int diam = size - 2 * margin - (int)Math.Round(1 * s);
                     using (var pen = new Pen(Color.FromArgb(160, 160, 160), 1.5f))
-                        g.DrawEllipse(pen, 2, 2, 11, 11);
+                        g.DrawEllipse(pen, margin, margin, diam, diam);
+                    int dotD = (int)Math.Round(5 * s);
+                    int dotX = (size - dotD) / 2;
                     using (var brush = new SolidBrush(Color.FromArgb(100, 100, 100)))
-                        g.FillEllipse(brush, 5, 5, 5, 5);
+                        g.FillEllipse(brush, dotX, dotX, dotD, dotD);
                 }
-
-                return Icon.FromHandle(bmp.GetHicon());
             }
+            return bmp;
+        }
+
+        /// <summary>Draws a 16x16 tray icon: grey circle (idle) or filled blue circle (locked).</summary>
+        private Icon DrawTrayIcon(bool locked)
+        {
+            using (var bmp = DrawTrayIconBitmap(locked, 16))
+                return Icon.FromHandle(bmp.GetHicon());
         }
 
         // ── Settings actions ──────────────────────────────────────────────
