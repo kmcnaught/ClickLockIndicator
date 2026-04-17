@@ -67,6 +67,7 @@ namespace ClickLockIndicator
             btnClose.Location = new Point(ClientSize.Width - btnClose.Width - 12, ClientSize.Height - btnClose.Height - 12);
             Controls.Add(btnClose);
             AcceptButton = btnClose;
+            CancelButton = btnClose;
         }
     }
 }

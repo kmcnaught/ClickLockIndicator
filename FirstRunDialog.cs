@@ -58,6 +58,8 @@ namespace ClickLockIndicator
                 ScrollBars = RichTextBoxScrollBars.None,
                 TabStop = false,
                 Font = SystemFonts.MessageBoxFont,
+                AccessibleRole = AccessibleRole.StaticText,
+                AccessibleName = "Description",
             };
             rtDesc.AppendText("This tool shows a visual overlay when the Windows ");
             rtDesc.SelectionFont = new Font(SystemFonts.MessageBoxFont, FontStyle.Italic);
@@ -100,6 +102,7 @@ namespace ClickLockIndicator
                 Image = _idleBmp,
                 SizeMode = PictureBoxSizeMode.AutoSize,
                 Location = new Point(iconX, y + 2),
+                AccessibleName = "Idle state icon: grey circle",
             });
             Controls.Add(new Label { Text = "Idle", Location = new Point(iconX + 20, y + 2), AutoSize = true });
 
@@ -109,6 +112,7 @@ namespace ClickLockIndicator
                 Image = _lockedBmp,
                 SizeMode = PictureBoxSizeMode.AutoSize,
                 Location = new Point(iconX, y + 2),
+                AccessibleName = "Locked state icon: filled blue circle",
             });
             Controls.Add(new Label { Text = "Locked", Location = new Point(iconX + 20, y + 2), AutoSize = true });
 
@@ -164,6 +168,7 @@ namespace ClickLockIndicator
                 DropDownStyle = ComboBoxStyle.DropDownList,
                 Location = new Point(80, y),
                 Width = 100,
+                AccessibleName = "Overlay style",
             };
             _cmbOverlay.Items.AddRange(new object[] { "Arc", "Ring", "None" });
             _cmbOverlay.SelectedIndex = 0;
